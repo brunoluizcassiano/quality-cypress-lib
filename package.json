@@ -1,0 +1,32 @@
+{
+  "name": "cypress-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cypress:clean:reports": "node ./cypress/support/clean.js",
+    "cypress:clean:reportstemp": "node ./cypress/support/cleantemp.js",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "cypress:safe": "npm run --silent cypress:initial && npm run --silent cypress:clean:reports && npm run --silent cypress:run",
+    "cypress:smoke:safe": "npm run cypress:clean:reports && npx cypress-tags run -e TAGS='@SmokeTest'",
+    "smoke-test": "npm run cypress:smoke:safe ; npm run postcypress:run ; npm run cypress:clean:reportstemp",
+    "test": "npm run --silent cypress:safe || exit 0",
+    "test:node:16": "npm run --silent cypress:safe || exit 0",
+    "posttest:node:16": "npm run posttest",
+    "posttest": "node ./cypress/support/multiple-cucumber-html-reporter.js && node ./cypress/support/convertertocsv.js",
+    "cypress:initial": "node ./cypress/support/initial.js",
+    "cypress:parallel": "cypress-parallel -s cypress:run -t 2 -d 'cypress/' -a '\"<your-cypress-cmd-args>\"'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": [
+      "cypress/e2e/**/*.js"
+    ]
+  },
+  "dependencies": {
+    "test-acceptance-cypress": "^1.0.66"
+  }
+}
